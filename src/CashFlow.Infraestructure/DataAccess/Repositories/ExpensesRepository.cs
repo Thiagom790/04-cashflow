@@ -58,4 +58,9 @@ internal class ExpensesRepository : IExpensesReadOnlyRepository, IExpensesWriteO
     {
         _dbContext.Expenses.Update(expense);
     }
+
+    public Task<List<Expense>> FilterByMonth(DateOnly date)
+    {
+        throw new NotImplementedException();
+    }
 }
