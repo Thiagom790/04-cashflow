@@ -8,6 +8,9 @@ internal class CashFlowDbContext : DbContext
     public CashFlowDbContext(DbContextOptions options) : base(options) { }
 
     public DbSet<Expense> Expenses { get; set; }
+    
+    // the Users is the name of the table
+    public DbSet<User> Users { get; set; }
 
     //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     //{

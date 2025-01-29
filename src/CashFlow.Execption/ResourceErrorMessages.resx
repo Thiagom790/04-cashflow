@@ -147,4 +147,7 @@
   <data name="INVALID_PASSWORD" xml:space="preserve">
     <value>Invalid password</value>
   </data>
+  <data name="EMAIL_ALREDY_REGISTERED" xml:space="preserve">
+    <value>Email already resistered</value>
+  </data>
 </root>
