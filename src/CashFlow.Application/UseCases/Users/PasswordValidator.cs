@@ -51,6 +51,11 @@ public partial class PasswordValidator<T> : PropertyValidator<T, string>
             return false;
         }
 
+        // if (Regex.IsMatch(password, @"[A-z]"))
+        // {
+        //     // do something
+        // }
+
         return true;
     }
 
