@@ -96,6 +96,15 @@ namespace CashFlow.Execption {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The email or password are invalid.
+        /// </summary>
+        public static string EMAIL_OR_PASSWORD_INVALID {
+            get {
+                return ResourceManager.GetString("EMAIL_OR_PASSWORD_INVALID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Expense not found.
         /// </summary>
         public static string EXPENSE_NOT_FOUND {
