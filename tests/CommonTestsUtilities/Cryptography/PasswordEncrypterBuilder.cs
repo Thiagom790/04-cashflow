@@ -11,6 +11,7 @@ public class PasswordEncrypterBuilder
     {
         _mock = new Mock<IPasswordEncrypter>();
 
+        //Aqui eu estou retornando um valor fixo
         _mock.Setup(passwordEncrypter => passwordEncrypter.Encrypt(It.IsAny<string>())).Returns("PasswordEncrypted");
     }
 
