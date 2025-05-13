@@ -2,6 +2,7 @@
 using CashFlow.Communication.Requests;
 using CashFlow.Domain.Repositories;
 using CashFlow.Domain.Repositories.Expenses;
+using CashFlow.Domain.Services.LoggedUser;
 using CashFlow.Execption;
 using CashFlow.Execption.ExceptionBase;
 
@@ -12,20 +13,25 @@ public class UpdateExpenseUseCase : IUpdateExpenseUseCase
     private readonly IExpensesUpdateOnlyRepository _repoitory;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
+    private readonly ILoggedUser _loggedUser;
 
-    public UpdateExpenseUseCase(IExpensesUpdateOnlyRepository repoitory, IUnitOfWork unitOfWork, IMapper mapper)
+    public UpdateExpenseUseCase(IExpensesUpdateOnlyRepository repoitory, IUnitOfWork unitOfWork, IMapper mapper, ILoggedUser loggedUser)
     {
         _repoitory = repoitory;
         _unitOfWork = unitOfWork;
         _mapper = mapper;
+        _loggedUser = loggedUser;
     }
 
     public async Task Execute(long id, RequestExpenseJson request)
     {
         Validate(request);
 
-        var expense = await _repoitory.GetById(id);
+        var loggedUserId = await _loggedUser.Get();
 
+        var expense = await _repoitory.GetById(loggedUserId, id);
+
+        // if (expense is null || expense.UserId != loggedUserId.Id) // uma possibilidade é fazer isso
         if (expense is null)
         {
             throw new NotFoundException(ResourceErrorMessages.EXPENSE_NOT_FOUND);
@@ -39,7 +45,7 @@ public class UpdateExpenseUseCase : IUpdateExpenseUseCase
         await _unitOfWork.Commit();
     }
 
-    public void Validate(RequestExpenseJson request)
+    private void Validate(RequestExpenseJson request)
     {
         var validator = new RegisterExpenseValidator();
 

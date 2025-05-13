@@ -1,7 +1,9 @@
 using System.Text;
 using CashFlow.Api.Filters;
 using CashFlow.Api.Middleware;
+using CashFlow.Api.Token;
 using CashFlow.Application;
+using CashFlow.Domain.Security.Tokens;
 using CashFlow.Infraestructure;
 using CashFlow.Infraestructure.Extensions;
 using CashFlow.Infraestructure.Migrations;
@@ -57,6 +59,9 @@ builder.Services.AddMvc(options => options.Filters.Add(typeof(ExceptionFilter)))
 
 builder.Services.AddInfraestructure(builder.Configuration);
 builder.Services.AddAplication();
+builder.Services.AddScoped<ITokenProvider, HttpContextTokenValue>();
+// Adiciona no serviço de injeção de dependência a interface IHttpContextAccessor
+builder.Services.AddHttpContextAccessor();
 
 var signingKey = builder.Configuration.GetValue<string>("Settings:Jwt:SigningKey");
 
