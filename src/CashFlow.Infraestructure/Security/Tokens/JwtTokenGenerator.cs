@@ -25,8 +25,8 @@ internal class JwtTokenGenerator : IAccessTokenGenerator
             // as clains funcionam num modelo chave e valor
             new Claim(ClaimTypes.Name, user.Name),
             new Claim(ClaimTypes.Sid, user.UserIdentifier.ToString()),
+            new Claim(ClaimTypes.Role, user.Role),
         };
-        
         
         // Descreve como o token deve ser gerado
         var tokenDescriptor = new SecurityTokenDescriptor
@@ -42,9 +42,9 @@ internal class JwtTokenGenerator : IAccessTokenGenerator
 
         // Essa classe é para criar um token
         var tokenHandler = new JwtSecurityTokenHandler();
-        
+
         var securityToken = tokenHandler.CreateToken(tokenDescriptor);
-        
+
         return tokenHandler.WriteToken(securityToken);
     }
 

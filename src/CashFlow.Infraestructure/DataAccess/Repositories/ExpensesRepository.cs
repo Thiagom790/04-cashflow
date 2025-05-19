@@ -21,7 +21,7 @@ internal class ExpensesRepository(CashFlowDbContext dbContext) :
             .FirstOrDefaultAsync(expense => expense.Id == id && expense.UserId == user.Id);
     }
 
-    public Task<List<Expense>> FilterByMonth(DateOnly date)
+    public Task<List<Expense>> FilterByMonth(User user, DateOnly date)
     {
         var startDate = new DateTime(date.Year, date.Month, 1).Date;
 
@@ -31,7 +31,7 @@ internal class ExpensesRepository(CashFlowDbContext dbContext) :
         return dbContext
             .Expenses
             .AsNoTracking()
-            .Where(expense => expense.Date >= startDate && expense.Date <= endDate)
+            .Where(expense => expense.UserId == user.Id && expense.Date >= startDate && expense.Date <= endDate)
             .OrderBy(expense => expense.Date)
             .ThenBy(expense => expense.Title)
             .ToListAsync();
