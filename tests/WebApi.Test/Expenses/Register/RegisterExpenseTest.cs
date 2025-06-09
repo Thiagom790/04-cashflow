@@ -8,19 +8,23 @@ using WebApi.Test.InlineData;
 
 namespace WebApi.Test.Expenses.Register;
 
-public class RegisterExpenseTest(CustomWebApplicationFactory webApplicationFactory)
-    : CashFlowClassFixture(webApplicationFactory)
+public class RegisterExpenseTest : CashFlowClassFixture
 {
     private const string METHOD = "api/expenses";
 
-    private readonly string _token = webApplicationFactory.GetToken();
+    private readonly string _token;
+
+    public RegisterExpenseTest(CustomWebApplicationFactory webApplicationFactory) : base(webApplicationFactory)
+    {
+        _token = webApplicationFactory.GetToken();
+    }
 
     [Fact]
     public async Task Success()
     {
         var request = RequestRegisterExpenseJsonBuilder.Build();
 
-        var result = await DoPost(METHOD, request);
+        var result = await DoPost(METHOD, request, token: _token);
 
         result.StatusCode.Should().Be(HttpStatusCode.Created);
 
@@ -38,7 +42,7 @@ public class RegisterExpenseTest(CustomWebApplicationFactory webApplicationFacto
         var request = RequestRegisterExpenseJsonBuilder.Build();
         request.Title = string.Empty;
 
-        var result = await DoPost(requestUri: METHOD, request: request, culture: culture);
+        var result = await DoPost(requestUri: METHOD, request: request, culture: culture, token: _token);
 
         result.StatusCode.Should().Be(HttpStatusCode.BadRequest);
 

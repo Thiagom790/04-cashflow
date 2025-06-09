@@ -1,28 +1,23 @@
 ﻿using System.Globalization;
 using System.Net;
-using System.Net.Http.Headers;
-using System.Net.Http.Json;
 using System.Text.Json;
 using CashFlow.Communication.Requests;
 using CashFlow.Execption;
 using CommonTestsUtilities.Requests;
 using FluentAssertions;
-using Microsoft.AspNetCore.Authentication;
 
 namespace WebApi.Test.Login.DoLogin;
 
-public class DoLoginTest : IClassFixture<CustomWebApplicationFactory>
+public class DoLoginTest : CashFlowClassFixture
 {
     private const string Method = "api/login";
 
-    private readonly HttpClient _httpClient;
     private readonly string _email;
     private readonly string _name;
     private readonly string _password;
 
-    public DoLoginTest(CustomWebApplicationFactory webApplicationFactory)
+    public DoLoginTest(CustomWebApplicationFactory webApplicationFactory) : base(webApplicationFactory)
     {
-        _httpClient = webApplicationFactory.CreateClient();
         _email = webApplicationFactory.GetEmail();
         _name = webApplicationFactory.GetName();
         _password = webApplicationFactory.GetPassword();
@@ -37,7 +32,7 @@ public class DoLoginTest : IClassFixture<CustomWebApplicationFactory>
             Password = _password
         };
 
-        var response = await _httpClient.PostAsJsonAsync(Method, request);
+        var response = await DoPost(requestUri: Method, request: request);
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
 
@@ -53,8 +48,7 @@ public class DoLoginTest : IClassFixture<CustomWebApplicationFactory>
     {
         var request = RequestLoginJsonBuilder.Build();
 
-        _httpClient.DefaultRequestHeaders.AcceptLanguage.Add(new StringWithQualityHeaderValue("en"));
-        var response = await _httpClient.PostAsJsonAsync(Method, request);
+        var response = await DoPost(requestUri: Method, request: request);
 
         response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
 

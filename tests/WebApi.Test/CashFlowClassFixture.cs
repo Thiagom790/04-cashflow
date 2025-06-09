@@ -4,7 +4,7 @@ using System.Net.Http.Json;
 namespace WebApi.Test;
 
 public class CashFlowClassFixture(CustomWebApplicationFactory webApplicationFactory)
-    : IClassFixture<CashFlowClassFixture>
+    : IClassFixture<CustomWebApplicationFactory>
 {
     private readonly HttpClient _httpClient = webApplicationFactory.CreateClient();
 

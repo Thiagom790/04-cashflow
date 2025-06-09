@@ -17,11 +17,12 @@ public class RegisterUserTest(
     CustomWebApplicationFactory webApplicationFactory
     // WebApplicationFactory<Program> webApplicationFactory // versão default porém use o app.settings development
 // ) : IClassFixture<WebApplicationFactory<Program>>
-) : IClassFixture<CustomWebApplicationFactory>
+// ) : IClassFixture<CustomWebApplicationFactory>
+) : CashFlowClassFixture(webApplicationFactory)
 {
     private const string METHOD = "api/user";
 
-    private readonly HttpClient _httpClient = webApplicationFactory.CreateClient();
+    // private readonly HttpClient _httpClient = webApplicationFactory.CreateClient();
 
     [Fact]
     public async Task Success()
@@ -31,7 +32,8 @@ public class RegisterUserTest(
 
         var request = RequestRegisterUserJsonBuilder.Build();
 
-        var result = await _httpClient.PostAsJsonAsync(METHOD, request);
+        // var result = await _httpClient.PostAsJsonAsync(METHOD, request);
+        var result = await DoPost(requestUri: METHOD, request: request);
 
         result.StatusCode.Should().Be(HttpStatusCode.Created);
 
@@ -57,9 +59,10 @@ public class RegisterUserTest(
         var request = RequestRegisterUserJsonBuilder.Build();
         request.Name = string.Empty;
 
-        _httpClient.DefaultRequestHeaders.AcceptLanguage.Add(new StringWithQualityHeaderValue(cultureInfo));
+        // _httpClient.DefaultRequestHeaders.AcceptLanguage.Add(new StringWithQualityHeaderValue(cultureInfo));
 
-        var result = await _httpClient.PostAsJsonAsync(METHOD, request);
+        // var result = await _httpClient.PostAsJsonAsync(METHOD, request);
+        var result = await DoPost(requestUri: METHOD, request: request, culture: cultureInfo);
 
         result.StatusCode.Should().Be(HttpStatusCode.BadRequest);
 
