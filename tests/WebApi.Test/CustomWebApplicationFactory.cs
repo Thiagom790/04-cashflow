@@ -12,6 +12,7 @@ namespace WebApi.Test;
 
 public class CustomWebApplicationFactory : WebApplicationFactory<Program>
 {
+    private Expense _expense;
     private User _user;
     private string _password;
     private string _token;
@@ -36,7 +37,7 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
             var passwordEncrypter = scope.ServiceProvider.GetRequiredService<IPasswordEncrypter>();
 
             StartDatabase(dbContext, passwordEncrypter);
-            
+
             var tokenGenerator = scope.ServiceProvider.GetRequiredService<IAccessTokenGenerator>();
             _token = tokenGenerator.Generate(_user);
         });
@@ -45,20 +46,34 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
     public string GetEmail() => _user.Email;
 
     public string GetName() => _user.Name;
-    
+
     public string GetPassword() => _password;
-    
+
     public string GetToken() => _token;
+
+    public long GetExpenseId() => _expense.Id;
 
     private void StartDatabase(CashFlowDbContext dbContext, IPasswordEncrypter passwordEncrypter)
     {
+        AddUsers(dbContext, passwordEncrypter);
+        AddExpenses(dbContext, _user);
+
+        dbContext.SaveChanges();
+    }
+
+    private void AddUsers(CashFlowDbContext dbContext, IPasswordEncrypter passwordEncrypter)
+    {
         _user = UserBuilder.Build();
         _password = _user.Password;
-        
         _user.Password = passwordEncrypter.Encrypt(_user.Password);
 
         dbContext.Users.Add(_user);
+    }
 
-        dbContext.SaveChanges();
+    private void AddExpenses(CashFlowDbContext dbContext, User user)
+    {
+        _expense = ExpenseBuilder.Build(user);
+
+        dbContext.Expenses.Add(_expense);
     }
 }
