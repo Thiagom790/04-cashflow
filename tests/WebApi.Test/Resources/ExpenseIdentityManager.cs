@@ -5,4 +5,6 @@ namespace WebApi.Test.Resources;
 public class ExpenseIdentityManager(Expense expense)
 {
     public long GetExpenseId() => expense.Id;
+    
+    public DateTime GetExpenseDate() => expense.Date;
 }

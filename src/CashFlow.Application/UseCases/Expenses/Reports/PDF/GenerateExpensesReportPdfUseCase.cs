@@ -28,7 +28,7 @@ public class GenerateExpensesReportPdfUseCase : IGenerateExpensesReportPdfUseCas
         GlobalFontSettings.FontResolver = new ExpensesReportFontResolver();
     }
 
-    public async Task<byte[]> Execute(DateOnly month)
+    public async Task<byte[]> ExecuteAsync(DateOnly month)
     {
         var loggedUser = await _loggedUser.Get();
 

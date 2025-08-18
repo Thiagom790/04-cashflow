@@ -2,5 +2,5 @@
 
 public interface IGenerateExpensesReportExcelUseCase
 {
-    Task<byte[]> Execute(DateOnly month);
+    Task<byte[]> ExecuteAsync(DateOnly month);
 }

@@ -19,7 +19,7 @@ public class GenerateExpensesReportExcelUseCase : IGenerateExpensesReportExcelUs
         _loggedUser = loggedUser;
     }
 
-    public async Task<byte[]> Execute(DateOnly month)
+    public async Task<byte[]> ExecuteAsync(DateOnly month)
     {
         var loggedUser = await _loggedUser.Get();
 
