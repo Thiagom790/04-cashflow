@@ -10,7 +10,7 @@ public class AutoMapping : Profile
     public AutoMapping()
     {
         RequestToEntity();
-        EntityToRequest();
+        EntityToResponse();
     }
 
     private void RequestToEntity()
@@ -20,10 +20,11 @@ public class AutoMapping : Profile
             .ForMember(dest => dest.Password, config => config.Ignore());
     }
 
-    private void EntityToRequest()
+    private void EntityToResponse()
     {
         CreateMap<Expense, ReponseRegisterExpenseJson>();
         CreateMap<Expense, ResponseShortExpenseJson>();
         CreateMap<Expense, ResponseExpenseJson>();
+        CreateMap<User, ResponseUserProfileJson>();
     }
 }
