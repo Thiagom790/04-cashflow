@@ -22,7 +22,7 @@ public static class DependencyInjectionExtension
     {
         services.AddScoped<IPasswordEncrypter, Security.Cryptography.BCrypt>();
         services.AddScoped<ILoggedUser, LoggedUser>();
-        
+
         AddToken(services, configuration);
         AddRepositories(services);
 
@@ -50,6 +50,7 @@ public static class DependencyInjectionExtension
         services.AddScoped<IExpensesUpdateOnlyRepository, ExpensesRepository>();
         services.AddScoped<IUserReadOnlyRepository, UserRepository>();
         services.AddScoped<IUserWriteOnlyRepository, UserRepository>();
+        services.AddScoped<IUserUpdateOnlyRepository, UserRepository>();
     }
 
     private static void AddDbContext(IServiceCollection services, IConfiguration configuration)
