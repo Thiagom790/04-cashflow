@@ -25,7 +25,7 @@ public static class DependencyInjectionExtension
 
     public static void AddAutoMapper(IServiceCollection services)
     {
-        services.AddAutoMapper(typeof(AutoMapping));
+        services.AddAutoMapper(config => config.AddProfile<AutoMapping>());
     }
 
     public static void AddUseCases(IServiceCollection services)
